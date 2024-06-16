@@ -1,6 +1,22 @@
-### Commit Documentation
+# Welcome to Asteria Academy - Student Information System!
+Asteria Academy - SIS was based of from my current project [Asteria Academy](https://github.com/gfdelrosario12/Asteria-Academy) which its SIS portal now continued with my groupmates on Database Management System.
 
-## June 16, 2024; 3:22 AM
+## PUP - ITECH DCPET 2-1 DMS Group Members
+- Cabuello, Keren
+- Castillo, Ivhorre
+- Del Rosario, Gladwin
+- Ebiola, Frankie
+- Robea, Kristine
+
+## Technology Stack
+- Frontent: JavaScript - React, HTML, CSS
+- UI Frameworks: Next UI, Bootstrap
+- Backend: Java - Spring Boot
+
+
+## Commit Documentation
+
+### June 16, 2024; 3:22 AM
 Commit Message: Initial Commit
 Background: Initial files of the project
 Status:
@@ -9,3 +25,16 @@ Status:
         - Integrated Root Layout with app pages
     Issues:
         - None; Initial Stable Build
+
+### June 16, 2024; 10:25 PM
+Commit Message: Integrated Log In
+Background: Integrated Initial User Authentication Files
+Status:
+    Updates:
+        - Added Log In and initial elemetns
+        - Added register and landing file of SIS but still empty yet.
+    Issues:
+        - Registration not yet completed
+        - Some Log In Items are not yet completed
+    Build Status:
+        - Stable

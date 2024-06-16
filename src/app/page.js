@@ -1,6 +1,6 @@
 "use client"
 
-import App from "../app/App";
+import Landing from "./Landing";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import bootstrap CSS
 import { useEffect } from "react";
 
@@ -10,6 +10,6 @@ export default function Home() {
   }, []);
 
   return (
-      <App />
+      <Landing />
   );
 }

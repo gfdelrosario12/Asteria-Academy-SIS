@@ -6,57 +6,13 @@
   font-size: 1.1em;
 }
 
-.portal {
-  background-color: #ffd700 !important;
-}
-
-.enroll {
-  background-color: #ffd700 !important;
-}
-
-.enroll:hover,
-.portal:hover {
-  background-color: #ffd700;
-  border: 1px solid #13325b;
-}
-
 .nav-link:hover {
   text-decoration: underline;
 }
 
-.dropdown-menu {
-  text-align: center; /* Center-align the text */
-}
-
-.dropdown-menu li {
-  display: inline-block; /* Display list items inline */
-}
-
-.blue-modal {
-  color: #13325b;
-  font-size: 1.2em;
-}
-
-.modal-button-element {
-  padding: 5px 100px;
-}
-
-.modal {
-  text-align: center;
-  padding: 0 !important;
-}
-
-.modal:before {
-  content: "";
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  margin-right: -4px;
-}
-
-.modal-dialog {
-  display: inline-block;
-  text-align: left;
+.dropdown-item:hover {
+  background-color: #13325b !important;
+  color: white ;
 }
 
 @media only screen and (max-width: 768px) {

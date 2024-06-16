@@ -7,11 +7,9 @@ import "../Navigation Bar/Navbar.css";
 
 function Navbar() {
   const [aboutOpen, setAboutOpen] = useState(false);
-  const [modalityOpen, setModalityOpen] = useState(false);
-  const [educatorsOpen, setEducatorsOpen] = useState(false);
 
   return (
-    <nav className="navbar navbar-light bg-light p-2">
+    <nav className="navbar navbar-light bg-light p-2 mb-3">
       <div className="container-fluid">
         <Link href="/">
           <Image src={logo} className="logo" alt="logo" width={150} height={100} />
@@ -23,7 +21,7 @@ function Navbar() {
             onMouseLeave={() => setAboutOpen(false)}
           >
             <p className="nav-link m-4">About</p>
-            <ul className={`dropdown-menu ${aboutOpen ? "show" : ""}`}>
+            <ul className={`dropdown-menu text-center ${aboutOpen ? "show" : ""}`}>
               <li>
                 <Link href="/about/seal" className="dropdown-item">
                   School Seal
@@ -46,38 +44,10 @@ function Navbar() {
           </Link>
           <div className="m-3">
             <button
-              type="button"
               className="btn portal"
-              data-bs-toggle="modal"
-              data-bs-target="#portal"
             >
-              Portal
+              SIS Portal
             </button>
-          </div>
-
-          <div
-            className="modal fade"
-            id="portal"
-            tabIndex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-body">
-                  <div className="d-flex flex-column justify-content-center align-items-center">
-                    <Image src={logo} className="logo" alt="logo" width={150} height={100} />{" "}
-                    <h1 className="p-2 blue-modal">Choose Your Platform</h1>
-                    <div className="my-2">
-                      <button className="btn portal modal-button-element">SIS</button>
-                    </div>
-                    <div className="my-2">
-                      <button className="btn portal modal-button-element">LMS</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </form>
       </div>
