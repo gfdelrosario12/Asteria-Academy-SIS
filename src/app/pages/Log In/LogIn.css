@@ -9,11 +9,9 @@
     background-color: #ffd700 !important;
 }
 
-.btn {
-    background-color: #ffd700 !important;
-  }
-  
-  .btn:hover {
-    background-color: #ffd700 !important;
-    border: 1px solid #13325b !important;
-  }
+.dropdown-button {
+    border: none;
+    background: #EEEEEE;
+    border-radius: 20px;
+    padding: 5px 20px;
+}

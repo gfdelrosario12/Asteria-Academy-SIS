@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import LogIn from './components/Site Authentication/Log In/LogIn';
+import LogIn from './pages/Log In/LogIn';
 
 function Landing() {
 

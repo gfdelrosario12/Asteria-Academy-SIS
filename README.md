@@ -17,24 +17,38 @@ Asteria Academy - SIS was based of from my current project [Asteria Academy](htt
 ## Commit Documentation
 
 ### June 16, 2024; 3:22 AM
-Commit Message: Initial Commit
-Background: Initial files of the project
-Status:
-    Updates:
+- Commit Message: Initial Commit
+- Background: Initial files of the project
+- Status:
+    - Updates:
         - Integrated Navigation Bar
         - Integrated Root Layout with app pages
-    Issues:
+    - Issues:
         - None; Initial Stable Build
 
 ### June 16, 2024; 10:25 PM
-Commit Message: Integrated Log In
-Background: Integrated Initial User Authentication Files
-Status:
-    Updates:
+- Commit Message: Integrated Log In
+- Background: Integrated Initial User Authentication Files
+- Status:
+    - Updates:
         - Added Log In and initial elemetns
         - Added register and landing file of SIS but still empty yet.
-    Issues:
+    - Issues:
         - Registration not yet completed
         - Some Log In Items are not yet completed
-    Build Status:
+    - Build Status:
         - Stable
+
+### June 17, 2024; 12:08 AM
+- Commit Message: Completed Log In and Registration
+- Background: Integrated Initial User Authentication Files
+- Status:
+    - Updates:
+        - Completed Log In and Registration File
+        - Integrated Next Link to Link Log In to Registration
+        - Renamed Page Sites to page.js
+    - Issues:
+        - Next Router, Page Not Found(solved)
+        - Error when linking to SIS
+    - Build Status:
+        - Stable until Log In
