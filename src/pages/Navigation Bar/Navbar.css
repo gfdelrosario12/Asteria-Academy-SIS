@@ -1,0 +1,36 @@
+.navbar {
+  font-size: 1.2em;
+}
+
+.btn {
+  font-size: 1.1em;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+.dropdown-item:hover {
+  background-color: #13325b !important;
+  color: white ;
+}
+
+@media only screen and (max-width: 768px) {
+  .navbar {
+    font-size: 1em;
+  }
+
+  .btn {
+    font-size: 1em;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .navbar {
+    font-size: 0.9em;
+  }
+
+  .btn {
+    font-size: 0.9em;
+  }
+}
