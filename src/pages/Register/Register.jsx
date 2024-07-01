@@ -53,13 +53,13 @@ function Register() {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="contactNumber" className="form-label child-font">
-            Contact Number:
+          <label htmlFor="mobileNumber" className="form-label child-font">
+            Mobile Number:
           </label>
           <input
             type="text"
             className="form-control"
-            id="contactNumber"
+            id="mobileNumber"
           />
         </div>
         
@@ -77,17 +77,6 @@ function Register() {
             <option value="Other">Other</option>
             <option value="Prefer not to say">Prefer not to say</option>
           </select>
-        </div>
-        
-        <div className="mb-3">
-          <label htmlFor="mobileNumber" className="form-label child-font">
-            Mobile Number:
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="mobileNumber"
-          />
         </div>
         
         <div className="d-flex flex-row justify-content-center align-items-center mt-3">
