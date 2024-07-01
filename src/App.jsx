@@ -16,7 +16,9 @@ function App() {
     <Routes>
       <Route exact path="/" element={<Home />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/SIS/student" element={<StudentHomePage />} />
+      <Route path="/SIS/students" element={<StudentHomePage />} />
+      <Route path="/SIS/administrators" element={<StudentHomePage />} />
+      <Route path="/SIS/faculty" element={<StudentHomePage />} />
       <Route path="/about/seal" element={<Seal />} />
       <Route path="/about/vission-mission" element={<VM />} />
       <Route path="/about/developers" element={<Administration />} />
