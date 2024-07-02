@@ -14,6 +14,20 @@ function LogIn() {
     role: "",
   };
 
+  function extractNumberAfterLastDash(inputString) {
+    // Find the last index of '-'
+    const lastIndex = inputString.lastIndexOf('-');
+
+    // Extract the substring after the last '-'
+    const substringAfterLastDash = inputString.substring(lastIndex + 1);
+
+    // Parse the substring to get the number
+    const numberAfterLastDash = parseInt(substringAfterLastDash, 10);
+
+    // Return the number
+    return numberAfterLastDash;
+}
+
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("Username is required"),
     password: Yup.string().required("Password is required"),
@@ -34,6 +48,11 @@ function LogIn() {
         }
       );
       if (response.data === "Login successful") {
+        let username = extractNumberAfterLastDash(values.username);
+        console.log("username", username);
+        sessionStorage.setItem("id", username);
+        sessionStorage.setItem("role", values.role);
+        sessionStorage.setItem("isLoggedIn", true);
         navigate(`/SIS/${values.role.toLowerCase()}`); // Redirect to appropriate role-specific URL
       } else {
         setFieldError("general", "Invalid username, password, or role");

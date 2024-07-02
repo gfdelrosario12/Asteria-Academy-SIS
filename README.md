@@ -64,3 +64,17 @@ Asteria Academy - SIS was based of from my current project [Asteria Academy](htt
 - Background: Integrated Vite to resolve performance issues.
 - Status:
     - Adding Profile section made loading time long. Tried integrating Vite to tackle performace issues.
+
+### July 2, 2024; 3:01AM
+- Commit Message: Connected frontend and backend
+- Background: Connected frontend and backend through log in
+- Status:
+    - Connected frontend inputs to backend api controllers
+
+### July 3, 2024; 4:05PM
+- Commit Message: Established session storage
+- Background: Defined session storage variables
+- Status:
+    - Created variable for id
+    - Created variable for role
+    - Created variable for log in status
