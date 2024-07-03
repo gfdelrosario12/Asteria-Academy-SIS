@@ -1,23 +1,28 @@
 import React from "react";
-import DropdownMenu from "../components/DropdownMenu";
 import Layout from "../../../Layout";
+import { Link } from 'react-router-dom';
 
 function AdministratorHomePage() {
-  const dropdownItems1 = ["Action 1", "Another action 1", "Something else here 1"];
-  const dropdownItems2 = ["Action 2", "Another action 2", "Something else here 2"];
-  const dropdownItems3 = ["Action 3", "Another action 3", "Something else here 3"];
-  const dropdownItems4 = ["Action 4", "Another action 4", "Something else here 4"];
+  // Retrieve id from sessionStorage
+  let id = sessionStorage.getItem("id");
 
   return (
     <div>
       <Layout>
-        <h1>Dropdown Example</h1>
-        <div className="d-flex justify-content-between">
-          <DropdownMenu title="Dropdown 1" items={dropdownItems1} />
-          <DropdownMenu title="Dropdown 2" items={dropdownItems2} />
-          <DropdownMenu title="Dropdown 3" items={dropdownItems3} />
-          <DropdownMenu title="Dropdown 4" items={dropdownItems4} />
+        <div className="d-flex flex-column justify-content-center align-items-center">
+        <h1 className="my-4">Welcome Administrator {id}</h1>
+        <div className="d-flex flex-column justify-content-center align-items-center my-3">
+          <Link to = "/SIS/get/admin" className="fs-3 my-2">Get All Administrators</Link>
+          <Link to = "/SIS/get/students" className="fs-3 my-2">Get All Students</Link>
+          <Link to = "/SIS/get/faculty" className="fs-3 my-2">Get All Faculty</Link>
+          <Link to = "/SIS/get/classes" className="fs-3 my-2">Get All Classes</Link>
+          <Link to = "/SIS/create/student" className="fs-3 my-2">Create Student</Link>
+          <Link to = "/SIS/create/admin" className="fs-3 my-2">Create Administrator</Link>
+          <Link to = "/SIS/create/faculty" className="fs-3 my-2">Create Faculty</Link>
+          <Link to = "/SIS/create/class" className="fs-3 my-2">Create Class</Link>
         </div>
+        </div>
+
       </Layout>
     </div>
   );
