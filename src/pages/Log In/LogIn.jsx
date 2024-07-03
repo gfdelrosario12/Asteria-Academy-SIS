@@ -49,7 +49,6 @@ function LogIn() {
       );
       if (response.data === "Login successful") {
         let username = extractNumberAfterLastDash(values.username);
-        console.log("username", username);
         sessionStorage.setItem("id", username);
         sessionStorage.setItem("role", values.role);
         sessionStorage.setItem("isLoggedIn", true);
