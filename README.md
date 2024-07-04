@@ -93,3 +93,12 @@ Asteria Academy - SIS was based of from my current project [Asteria Academy](htt
         - Implemented create request methods of users(admin, student, faculty) and class for admins to create
     - Issues:
         - No validation implemented yet
+
+### July 4, 2024; 1:47PM
+- Commit Message: Create admin form validation
+- Background: Implemented form validation for the create method of admin
+- Status:
+    - Updates:
+        - Implemented form validation for the create method of admin using formik and yup
+    - Issues:
+        - No validation implemented for update yet

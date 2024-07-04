@@ -1,54 +1,54 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate instead of useHistory
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import Layout from "../../../../Layout";
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
-import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs"; // Import eye icons
+import "bootstrap/dist/css/bootstrap.min.css";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-function CreateStudent() {
-    const navigate = useNavigate(); // useNavigate hook
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [address, setAddress] = useState("");
-  const [gender, setGender] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
-  const role = "STUDENT"; // Role determined by the component name
-  const [showPassword, setShowPassword] = useState(false); // State for password visibility
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for confirm password visibility
+const CreateStudent = () => {
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("Passwords don't match");
-      return;
-    }
+  const initialValues = {
+    email: "",
+    password: "",
+    confirmPassword: "",
+    full_name: "",
+    address: "",
+    gender: "",
+    mobile_number: "",
+    date_of_birth: "",
+    course: "",
+    year_level: "",
+    role: "STUDENT",
+  };
 
+  const validationSchema = Yup.object({
+    email: Yup.string().email("Invalid email format").required("Required"),
+    password: Yup.string().min(6, "Password must be at least 6 characters").required("Required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Required"),
+    full_name: Yup.string().required("Required"),
+    address: Yup.string().required("Required"),
+    gender: Yup.string().required("Required"),
+    mobile_number: Yup.string().required("Required"),
+    date_of_birth: Yup.date().required("Required"),
+    course: Yup.string().required("Required"),
+    year_level: Yup.number().required("Required"),
+  });
+
+  const onSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await axios.post("http://localhost:8080/students/", {
-        email,
-        password,
-        full_name: fullName,
-        address,
-        gender,
-        mobile_number: parseInt(mobileNumber),
-        role,
-      });
-      console.log("Student created:", response.data);
-      navigate("/SIS/get/students"); // Navigate to the student list after successful creation
+      const response = await axios.post("http://localhost:8080/student/", values);
+      navigate("/SIS/get/student");
     } catch (error) {
       console.error("Error creating student:", error);
-      // Handle error, show error message
     }
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
+    setSubmitting(false);
   };
 
   return (
@@ -59,108 +59,91 @@ function CreateStudent() {
             <div className="card">
               <h5 className="card-header">Create Student</h5>
               <div className="card-body">
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-3">
-                    <label className="form-label">Email:</label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Password:</label>
-                    <div className="input-group">
-                      <input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        className="form-control"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                      />
-                      <button
-                        type="button"
-                        className="btn btn-outline-secondary"
-                        onClick={togglePasswordVisibility}
-                      >
-                        {showPassword ? <BsFillEyeSlashFill /> : <BsFillEyeFill />}
-                      </button>
-                    </div>
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Confirm Password:</label>
-                    <div className="input-group">
-                      <input
-                        id="confirmPassword"
-                        type={showConfirmPassword ? "text" : "password"}
-                        className="form-control"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                      />
-                      <button
-                        type="button"
-                        className="btn btn-outline-secondary"
-                        onClick={toggleConfirmPasswordVisibility}
-                      >
-                        {showConfirmPassword ? <BsFillEyeSlashFill /> : <BsFillEyeFill />}
-                      </button>
-                    </div>
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Full Name:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Address:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Gender:</label>
-                    <select
-                      className="form-select"
-                      value={gender}
-                      onChange={(e) => setGender(e.target.value)}
-                      required
-                    >
-                      <option value="">Select Gender</option>
-                      <option value="M">Male</option>
-                      <option value="F">Female</option>
-                      <option value="O">Other</option>
-                      <option value="Prefer not to say">Prefer not to say</option>
-                    </select>
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Mobile Number:</label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      value={mobileNumber}
-                      onChange={(e) => setMobileNumber(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="d-flex flex-column justify-content-center align-items-center">
-                    <button type="submit" className="btn portal">
-                      Create Student
-                    </button>
-                  </div>
-                </form>
+                <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+                  {({ isSubmitting }) => (
+                    <Form>
+                      <div className="mb-3">
+                        <Field type="email" name="email" className="form-control" placeholder="Email" />
+                        <ErrorMessage name="email" component="div" className="text-danger" />
+                      </div>
+                      <div className="mb-3">
+                        <div className="input-group">
+                          <Field
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            className="form-control"
+                            placeholder="Password"
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+                          </button>
+                        </div>
+                        <ErrorMessage name="password" component="div" className="text-danger" />
+                      </div>
+                      <div className="mb-3">
+                        <div className="input-group">
+                          <Field
+                            type={showConfirmPassword ? "text" : "password"}
+                            name="confirmPassword"
+                            className="form-control"
+                            placeholder="Confirm Password"
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          >
+                            {showConfirmPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+                          </button>
+                        </div>
+                        <ErrorMessage name="confirmPassword" component="div" className="text-danger" />
+                      </div>
+                      <div className="mb-3">
+                        <Field type="text" name="full_name" className="form-control" placeholder="Full Name" />
+                        <ErrorMessage name="full_name" component="div" className="text-danger" />
+                      </div>
+                      <div className="mb-3">
+                        <Field type="text" name="address" className="form-control" placeholder="Address" />
+                        <ErrorMessage name="address" component="div" className="text-danger" />
+                      </div>
+                      <div className="mb-3">
+                        <Field as="select" name="gender" className="form-select">
+                          <option value="">Select Gender</option>
+                          <option value="M">Male</option>
+                          <option value="F">Female</option>
+                          <option value="O">Other</option>
+                          <option value="Prefer not to say">Prefer not to say</option>
+                        </Field>
+                        <ErrorMessage name="gender" component="div" className="text-danger" />
+                      </div>
+                      <div className="mb-3">
+                        <Field type="text" name="mobile_number" className="form-control" placeholder="Mobile Number" />
+                        <ErrorMessage name="mobile_number" component="div" className="text-danger" />
+                      </div>
+                      <div className="mb-3">
+                        <Field type="date" name="date_of_birth" className="form-control" />
+                        <ErrorMessage name="date_of_birth" component="div" className="text-danger" />
+                      </div>
+                      <div className="mb-3">
+                        <Field type="text" name="course" className="form-control" placeholder="Course" />
+                        <ErrorMessage name="course" component="div" className="text-danger" />
+                      </div>
+                      <div className="mb-3">
+                        <Field type="number" name="year_level" className="form-control" placeholder="Year Level" />
+                        <ErrorMessage name="year_level" component="div" className="text-danger" />
+                      </div>
+                      <div className="d-flex flex-column justify-content-center align-items-center">
+                        <button type="submit" className="btn portal" disabled={isSubmitting}>
+                          Create Student
+                        </button>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
               </div>
             </div>
           </div>
@@ -168,6 +151,6 @@ function CreateStudent() {
       </div>
     </Layout>
   );
-}
+};
 
 export default CreateStudent;
