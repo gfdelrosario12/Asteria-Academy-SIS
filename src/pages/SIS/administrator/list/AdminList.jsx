@@ -40,6 +40,7 @@ function AdminList() {
         <table className="table table-striped table-hover">
           <thead className="thead-dark">
             <tr>
+              <td>ID</td>
               <th>Email</th>
               <th>Username</th>
               <th>Actions</th>
@@ -48,6 +49,7 @@ function AdminList() {
           <tbody>
             {admins.map(admin => (
               <tr key={admin.id}>
+                <td>{admin.id}</td>
                 <td>{admin.email}</td>
                 <td>{admin.username}</td>
                 <td>

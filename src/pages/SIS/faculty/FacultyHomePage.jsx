@@ -1,22 +1,61 @@
-import React from "react";
-import DropdownMenu from "../components/DropdownMenu";
-import Layout from "../../../Layout";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Layout from '../../../Layout';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 
 function FacultyHomePage() {
-  const dropdownItems1 = ["Action 1", "Another action 1", "Something else here 1"];
-  const dropdownItems2 = ["Action 2", "Another action 2", "Something else here 2"];
-  const dropdownItems3 = ["Action 3", "Another action 3", "Something else here 3"];
-  const dropdownItems4 = ["Action 4", "Another action 4", "Something else here 4"];
+  const facultyID = sessionStorage.getItem('id'); // Retrieve faculty ID from session storage
+  const [classes, setClasses] = useState([]);
+
+  useEffect(() => {
+    if (facultyID) {
+      fetchClassesByFacultyId(facultyID);
+    }
+  }, [facultyID]);
+
+  const fetchClassesByFacultyId = async (facultyId) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/class-subjects/faculty/${facultyId}/classes`);
+      setClasses(response.data);
+    } catch (error) {
+      console.error('Error fetching classes:', error);
+    }
+  };
 
   return (
     <div>
       <Layout>
-        <h1>Dropdown Example</h1>
-        <div className="d-flex flex-column justify-content-between">
-          <DropdownMenu title="Dropdown 1" items={dropdownItems1} />
-          <DropdownMenu title="Dropdown 2" items={dropdownItems2} />
-          <DropdownMenu title="Dropdown 3" items={dropdownItems3} />
-          <DropdownMenu title="Dropdown 4" items={dropdownItems4} />
+        <h1 className='text-center'>Classes Associated with Faculty</h1>
+        <div className="table-responsive px-5 py-3"> {/* Ensure responsiveness for smaller screens */}
+          <table className="table table-striped table-bordered table-hover">
+            <thead className="thead-dark"> {/* Dark header for better contrast */}
+              <tr>
+                <th>Class Name</th>
+                <th>School Year</th>
+                <th>Year Level</th>
+                <th>Semester</th>
+                <th>Program</th>
+                <th>Block</th>
+                <th>Faculty Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              {classes.map((classItem) => (
+                <tr key={classItem.id}>
+                  <td>
+                    <Link to={`/SIS/class-details/${classItem.id}`}>{classItem.className}</Link>
+                  </td>
+                  <td>{classItem.school_year}</td>
+                  <td>{classItem.year_level}</td>
+                  <td>{classItem.semester}</td>
+                  <td>{classItem.program}</td>
+                  <td>{classItem.block}</td>
+                  <td>{classItem.faculty.full_name}</td> {/* Assuming faculty object has a full_name field */}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </Layout>
     </div>

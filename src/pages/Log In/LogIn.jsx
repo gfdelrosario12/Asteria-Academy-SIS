@@ -48,10 +48,11 @@ function LogIn() {
         }
       );
       if (response.data === "Login successful") {
-        let username = extractNumberAfterLastDash(values.username);
-        sessionStorage.setItem("id", username);
+        let id = extractNumberAfterLastDash(values.username);
+        sessionStorage.setItem("id", id);
         sessionStorage.setItem("role", values.role);
         sessionStorage.setItem("isLoggedIn", true);
+        console.log(sessionStorage.getItem("id"));
         navigate(`/SIS/${values.role.toLowerCase()}`); // Redirect to appropriate role-specific URL
       } else {
         setFieldError("general", "Invalid username, password, or role");
