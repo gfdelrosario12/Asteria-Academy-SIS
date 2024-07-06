@@ -43,7 +43,7 @@ const CreateStudent = () => {
 
   const onSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await axios.post("http://localhost:8080/student/", values);
+      const response = await axios.post("http://localhost:8080/students/", values);
       navigate("/SIS/get/student");
     } catch (error) {
       console.error("Error creating student:", error);

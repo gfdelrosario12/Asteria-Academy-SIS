@@ -26,7 +26,7 @@ function FacultyHomePage() {
   return (
     <div>
       <Layout>
-        <h1 className='text-center'>Classes Associated with Faculty</h1>
+        <h1 className='text-center'>Classes Associated with Faculty {facultyID}</h1>
         <div className="table-responsive px-5 py-3"> {/* Ensure responsiveness for smaller screens */}
           <table className="table table-striped table-bordered table-hover">
             <thead className="thead-dark"> {/* Dark header for better contrast */}
