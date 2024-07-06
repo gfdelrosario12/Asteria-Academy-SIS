@@ -102,3 +102,12 @@ Asteria Academy - SIS was based of from my current project [Asteria Academy](htt
         - Implemented form validation for the create method of admin using formik and yup
     - Issues:
         - No validation implemented for update yet
+
+### July 4, 2024; 5:50PM
+- Commit Message: Partially completed Faculty Home Menu
+- Background: Utilized get method to retrieve classes that a faculty user is assigned
+- Status:
+    - Updates:
+        - Connected FacultyHomeMenu file to backend
+    - Issues:
+        - StudentsInClasses not yet completed
