@@ -22,6 +22,7 @@ import CreateAdministrator from "./pages/SIS/administrator/Create/CreateAdminist
 import CreateFaculty from "./pages/SIS/administrator/Create/CreateFaculty";
 import CreateClass from "./pages/SIS/administrator/Create/CreateClass";
 import StudentsInClass from "./pages/SIS/class_subject/StudentsInClass";
+import UpdateGrades from "./pages/SIS/grades/UpdateGrades";
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
         <Route path="/SIS/create/faculty" element={<CreateFaculty />} />
         <Route path="/SIS/create/class" element={<CreateClass />} />
         <Route path="/SIS/class-details/:id" element={<StudentsInClass />} />
+        <Route path="/SIS/grades/:id" element={<UpdateGrades />} />
       </Routes>
     </>
   );
