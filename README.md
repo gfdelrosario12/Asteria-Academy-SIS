@@ -111,3 +111,12 @@ Asteria Academy - SIS was based of from my current project [Asteria Academy](htt
         - Connected FacultyHomeMenu file to backend
     - Issues:
         - StudentsInClasses not yet completed
+
+### July 7, 2024; 2:41AM
+- Commit Message: Completed Faculty Menu
+- Background: Completed Faculty Menu by database connections
+- Status:
+    - Updates:
+        - Connected FacultyHomeMenu file to backend
+    - Issues:
+        - none

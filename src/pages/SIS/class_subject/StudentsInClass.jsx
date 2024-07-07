@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Layout from "../../../Layout";
+import { Link } from "react-router-dom";
 
 function StudentsInClass() {
   const { id } = useParams();
   const [students, setStudents] = useState([]);
   const [classInfo, setClassInfo] = useState({});
   const [facultyInfo, setFacultyInfo] = useState({});
-  const facultyID = sessionStorage.getItem('id');
+  const [grades, setGrades] = useState({});
+  const facultyID = sessionStorage.getItem("id");
 
   useEffect(() => {
     const fetchFaculty = async () => {
@@ -50,6 +52,30 @@ function StudentsInClass() {
     fetchStudents();
   }, [id, facultyID]);
 
+  useEffect(() => {
+    const fetchGrades = async () => {
+      if (students.length > 0) {
+        try {
+          const gradesResponse = await Promise.all(
+            students.map((student) =>
+              axios.get(`http://localhost:8080/grades/student/${student.id}/class/${id}`)
+            )
+          );
+          const gradesData = gradesResponse.reduce((acc, response, index) => {
+            acc[students[index].id] = response.data;
+            return acc;
+          }, {});
+          setGrades(gradesData);
+        } catch (error) {
+          console.error("Error fetching grades:", error);
+        }
+      }
+    };
+  
+    fetchGrades();
+  }, [students, id]);
+  
+
   return (
     <Layout>
       <div className="container">
@@ -80,6 +106,7 @@ function StudentsInClass() {
                 <th>Address</th>
                 <th>Gender</th>
                 <th>Mobile Number</th>
+                <th>Grades</th>
               </tr>
             </thead>
             <tbody>
@@ -91,6 +118,15 @@ function StudentsInClass() {
                   <td>{student.address}</td>
                   <td>{student.gender}</td>
                   <td>{student.mobile_number}</td>
+                  <td>
+                    {grades[student.id] && grades[student.id].length > 0
+                      ? grades[student.id].map((grade) => (
+                          <Link key={grade.id} to={`/SIS/grades/${grade.id}`}>
+                            {grade.grade}
+                          </Link>
+                        ))
+                      : "No grades available"}
+                  </td>
                 </tr>
               ))}
             </tbody>
