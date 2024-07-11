@@ -120,3 +120,12 @@ Asteria Academy - SIS was based of from my current project [Asteria Academy](htt
         - Connected FacultyHomeMenu file to backend
     - Issues:
         - none
+
+### July 7, 2024; 9:27PM
+- Commit Message: Partially Completed Grades Interfaces
+- Background: Completed grade interface for faculty side
+- Status:
+    - Updates:
+        - Completed viewing of classes that gets associated with grades
+    - Issues:
+        - Test other components

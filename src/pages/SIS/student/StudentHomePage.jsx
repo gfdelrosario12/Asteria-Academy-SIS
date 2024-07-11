@@ -1,25 +1,104 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../../Layout";
-import DropdownMenu from "../components/DropdownMenu";
+import axios from "axios";
 
 function StudentHomePage() {
-  const dropdownItems1 = ["Action 1", "Another action 1", "Something else here 1"];
-  const dropdownItems2 = ["Action 2", "Another action 2", "Something else here 2"];
-  const dropdownItems3 = ["Action 3", "Another action 3", "Something else here 3"];
-  const dropdownItems4 = ["Action 4", "Another action 4", "Something else here 4"];
+  const [classes, setClasses] = useState(null); // Initialize as null for initial loading state
+  const [classGradesMap, setClassGradesMap] = useState({}); // State to store grades for each class
 
-  // All links set to the dummy URL /SIS/student/grades
-  const dropdownItemsLinks = ["/SIS/student/grades", "/SIS/student/grades", "/SIS/student/grades"];
+  useEffect(() => {
+    // Fetch student ID from session storage
+    const studentId = sessionStorage.getItem("id");
+
+    // Fetch classes based on student ID
+    axios
+      .get(`http://localhost:8080/class-subjects/student/${studentId}/classes`)
+      .then((response) => {
+        console.log("API Response:", response.data); // Log the response data for debugging
+        if (Array.isArray(response.data)) {
+          setClasses(response.data); // Update state with fetched data if response is an array
+          // Fetch grades for each class
+          const fetchGradesForClasses = response.data.map((classSubject) =>
+            fetchGrades(studentId, classSubject.id)
+          );
+          Promise.all(fetchGradesForClasses)
+            .then((results) => {
+              const gradesMap = {};
+              results.forEach((grades, index) => {
+                gradesMap[response.data[index].id] = grades;
+              });
+              setClassGradesMap(gradesMap);
+            })
+            .catch((error) => {
+              console.error("Error fetching grades:", error); // Log fetch error
+            });
+        } else {
+          console.error("Unexpected API response format:", response.data); // Log unexpected response format
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching classes:", error); // Log fetch error
+      });
+  }, []); // Empty dependency array to run effect only once on mount
+
+  const fetchGrades = async (studentId, classId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/grades/student/${studentId}/class/${classId}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching grades for class ${classId}:`, error); // Log fetch error
+      return [];
+    }
+  };
 
   return (
     <div>
       <Layout>
-        <h1 className="text-center parent-font">Welcome Student, Name!</h1>
-        <div className="d-flex flex-column justify-content-between">
-          <DropdownMenu title="Dropdown 1" items={dropdownItems1} links={dropdownItemsLinks} />
-          <DropdownMenu title="Dropdown 2" items={dropdownItems2} links={dropdownItemsLinks} />
-          <DropdownMenu title="Dropdown 3" items={dropdownItems3} links={dropdownItemsLinks} />
-          <DropdownMenu title="Dropdown 4" items={dropdownItems4} links={dropdownItemsLinks} />
+        <div className="px-5">
+          {" "}
+          <h1 className="text-center my-4">Your Classes</h1>
+          {classes === null ? (
+            <p>Loading...</p>
+          ) : (
+            <table className="table table-striped">
+              <thead className="thead-dark">
+                <tr>
+                  <th>Class Name</th>
+                  <th>School Year</th>
+                  <th>Year Level</th>
+                  <th>Semester</th>
+                  <th>Program</th>
+                  <th>Block</th>
+                  <th>Faculty</th>
+                  <th>Grades</th>
+                </tr>
+              </thead>
+              <tbody>
+                {classes.map((classSubject) => (
+                  <tr key={classSubject.id}>
+                    <td>{classSubject.className}</td>
+                    <td>{classSubject.schoolYear}</td>
+                    <td>{classSubject.yearLevel}</td>
+                    <td>{classSubject.semester}</td>
+                    <td>{classSubject.program}</td>
+                    <td>{classSubject.block}</td>
+                    <td>{classSubject.faculty.full_name}</td>
+                    <td>
+                      {classGradesMap[classSubject.id]
+                        ? classGradesMap[classSubject.id].map((grade, index) => (
+                            <span key={grade.id}>
+                              {index > 0 && ", "} {grade.grade}
+                            </span>
+                          ))
+                        : "No grades available"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </Layout>
     </div>

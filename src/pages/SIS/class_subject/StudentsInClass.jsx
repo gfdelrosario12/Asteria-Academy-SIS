@@ -1,80 +1,94 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import Layout from "../../../Layout";
-import { Link } from "react-router-dom";
 
 function StudentsInClass() {
   const { id } = useParams();
   const [students, setStudents] = useState([]);
   const [classInfo, setClassInfo] = useState({});
   const [facultyInfo, setFacultyInfo] = useState({});
-  const [grades, setGrades] = useState({});
+  const [newStudentId, setNewStudentId] = useState("");
+  const [grades, setGrades] = useState([]);
   const facultyID = sessionStorage.getItem("id");
 
   useEffect(() => {
-    const fetchFaculty = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/faculty/${facultyID}`);
-        setFacultyInfo(response.data);
+        // Fetch faculty info
+        const facultyResponse = await axios.get(`http://localhost:8080/faculty/${facultyID}`);
+        setFacultyInfo(facultyResponse.data);
+
+        // Fetch class info
+        const classResponse = await axios.get(`http://localhost:8080/class-subjects/${id}`);
+        setClassInfo(classResponse.data);
+
+        // Fetch students in the class
+        const studentsResponse = await axios.get(`http://localhost:8080/students/studentsinclass/${id}`);
+        setStudents(studentsResponse.data);
+
+        // Fetch grades for the students in the class
+        await fetchGrades(studentsResponse.data);
       } catch (error) {
-        console.error("Error fetching faculty:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    const fetchClassInfo = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/class-subjects/${id}`);
-        setClassInfo(response.data);
-        console.log("API Response:", response.data); // Log the response to check its structure
-      } catch (error) {
-        console.error("Error fetching class info:", error);
-      }
-    };
-
-    const fetchStudents = async () => {
-      try {
-        console.log("Fetching students in class", id);
-        const response = await axios.get(`http://localhost:8080/students/studentsinclass/${id}`);
-        console.log("API Response:", response.data); // Log the response to check its structure
-        if (Array.isArray(response.data)) {
-          setStudents(response.data); // Assuming response.data is an array of students
-        } else {
-          console.error("Invalid data format:", response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching students:", error);
-      }
-    };
-
-    fetchFaculty();
-    fetchClassInfo();
-    fetchStudents();
+    fetchData();
   }, [id, facultyID]);
 
-  useEffect(() => {
-    const fetchGrades = async () => {
-      if (students.length > 0) {
-        try {
-          const gradesResponse = await Promise.all(
-            students.map((student) =>
-              axios.get(`http://localhost:8080/grades/student/${student.id}/class/${id}`)
-            )
-          );
-          const gradesData = gradesResponse.reduce((acc, response, index) => {
-            acc[students[index].id] = response.data;
-            return acc;
-          }, {});
-          setGrades(gradesData);
-        } catch (error) {
-          console.error("Error fetching grades:", error);
-        }
-      }
-    };
+  const fetchGrades = async (students) => {
+    try {
+      const gradePromises = students.map(student =>
+        axios.get(`http://localhost:8080/grades/student/${student.id}/class/${id}`)
+      );
+      const gradesResponses = await Promise.all(gradePromises);
+      const allGrades = gradesResponses.map(response => response.data).flat();
+      setGrades(allGrades);
+    } catch (error) {
+      console.error("Error fetching grades:", error);
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      // Fetch updated data after add/remove operations
+      const studentsResponse = await axios.get(`http://localhost:8080/students/studentsinclass/${id}`);
+      setStudents(studentsResponse.data);
+
+      await fetchGrades(studentsResponse.data);
+    } catch (error) {
+      console.error("Error fetching updated data:", error);
+    }
+  };
+
+  const handleAddStudent = async (studentId) => {
+    try {
+      await axios.put(`http://localhost:8080/class-subjects/${id}/add-student/${studentId}`);
+      const response = await axios.post(`http://localhost:8080/grades/`, {
+        student: { id: studentId },  // Ensure 'student' is correctly structured
+        classSubjectObj: { id: id }, // Ensure 'classSubjectObj' is correctly structured
+        grade: 0,
+      });
+      setNewStudentId("");
+      fetchData(); // Re-fetch data after adding student
+      // No need to refresh the whole page if using React Router for navigation
+    } catch (error) {
+      console.error("Error adding student:", error);
+    }
+  };
   
-    fetchGrades();
-  }, [students, id]);
-  
+
+  const handleRemoveStudent = async (studentId, gradeId) => {
+    try {
+      await axios.put(`http://localhost:8080/class-subjects/${id}/remove-student/${studentId}`);
+      await axios.delete(`http://localhost:8080/grades/${gradeId}`);
+      fetchData(); // Re-fetch data after removing student
+      // No need to refresh the whole page if using React Router for navigation
+    } catch (error) {
+      console.error("Error removing student:", error);
+    }
+  };
 
   return (
     <Layout>
@@ -107,6 +121,7 @@ function StudentsInClass() {
                 <th>Gender</th>
                 <th>Mobile Number</th>
                 <th>Grades</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -119,18 +134,53 @@ function StudentsInClass() {
                   <td>{student.gender}</td>
                   <td>{student.mobile_number}</td>
                   <td>
-                    {grades[student.id] && grades[student.id].length > 0
-                      ? grades[student.id].map((grade) => (
-                          <Link key={grade.id} to={`/SIS/grades/${grade.id}`}>
-                            {grade.grade}
-                          </Link>
-                        ))
-                      : "No grades available"}
+                    {grades
+                      .filter((grade) => grade.student.id === student.id)
+                      .map((grade) => (
+                        <span key={grade.id}>
+                          <Link to={`/SIS/grades/${grade.id}`}>{grade.grade}</Link>
+                          <br />
+                        </span>
+                      ))}
+                  </td>
+                  <td>
+                    {grades
+                      .filter((grade) => grade.student.id === student.id)
+                      .map((grade) => (
+                        <span key={grade.id}>
+                          <button
+                            className="btn"
+                            onClick={() => {
+                              handleRemoveStudent(student.id, grade.id);
+                            }}
+                          >
+                            Remove
+                          </button>
+                          <br />
+                        </span>
+                      ))}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Input for adding new student by ID */}
+        <div className="form-group mt-4">
+          <label>Add Student by ID:</label>
+          <input
+            type="text"
+            className="form-control"
+            value={newStudentId}
+            onChange={(e) => setNewStudentId(e.target.value)}
+          />
+          <button
+            className="btn mt-2"
+            onClick={() => handleAddStudent(newStudentId)}
+          >
+            Add Student
+          </button>
         </div>
       </div>
     </Layout>
