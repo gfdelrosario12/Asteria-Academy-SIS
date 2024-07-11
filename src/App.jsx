@@ -6,7 +6,6 @@ import Seal from "./pages/about/Seal";
 import VM from "./pages/about/VM";
 import Administration from "./pages/about/Administration";
 import Contact from "./pages/Contact/Contact";
-import StudentGrades from "./pages/SIS/grades/StudentGrades";
 import AdministratorHomePage from "./pages/SIS/administrator/AdministratorHomePage";
 import FacultyHomePage from "./pages/SIS/faculty/FacultyHomePage";
 import AdminList from "./pages/SIS/administrator/list/AdminList";
@@ -37,7 +36,6 @@ function App() {
         <Route path="/about/vission-mission" element={<VM />} />
         <Route path="/about/developers" element={<Administration />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/SIS/student/grades" element={<StudentGrades />} />
         <Route path="/SIS/get/students" element={<StudentList />} />
         <Route path="/SIS/get/admin" element={<AdminList />} />
         <Route path="/SIS/get/faculty" element={<FacultyList />} />

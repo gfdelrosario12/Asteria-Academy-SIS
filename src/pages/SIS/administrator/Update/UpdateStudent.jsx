@@ -116,16 +116,6 @@ function UpdateStudent() {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
-            <label>Role</label>
-            <input
-              type="text"
-              className="form-control"
-              name="role"
-              value={student.role}
-              onChange={handleInputChange}
-            />
-          </div>
           <button type="submit" className="btn btn-primary">
             Update
           </button>
